@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.polynomial import polynomial
 
-from utils.logger import AppLogger
+from src.utils.logger import AppLogger
 
 
 class SimulationParamsCalculator:

@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from data.parser import DataParser
-from utils.constants import XLSX_PATH, ARMOR_VOLTAGE, TACOMETER_VOLTAGE, POLY_DEGREE, CSV_PATH, ENGINE_SPEED
-from utils.logger import AppLogger
+from src.data.parser import DataParser
+from src.utils.constants import XLSX_PATH, ARMOR_VOLTAGE, TACOMETER_VOLTAGE, POLY_DEGREE, CSV_PATH, ENGINE_SPEED
+from src.utils.logger import AppLogger
 
 
 class Plotter:

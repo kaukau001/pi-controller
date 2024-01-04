@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils.logger import AppLogger
+from src.utils.logger import AppLogger
 
 
 class CalculateMotorControllerParams:

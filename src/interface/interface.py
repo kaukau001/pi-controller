@@ -2,13 +2,12 @@ import tkinter as tk
 import pandas as pd
 from pandas import DataFrame
 import subprocess
-from utils.constants import XLSX_PATH, ARMOR_VOLTAGE, TACOMETER_VOLTAGE, CSV_PATH, ENGINE_SPEED, ROTINE_PATH
-from data.parser import DataParser
-from plots.plotter import Plotter
-from utils.logger import AppLogger
+from src.utils.constants import XLSX_PATH, ARMOR_VOLTAGE, TACOMETER_VOLTAGE, CSV_PATH, ENGINE_SPEED, ROTINE_PATH
+from src.data.parser import DataParser
+from src.plots.plotter import Plotter
+from src.utils.logger import AppLogger
 from tkinter import scrolledtext
 from tkinter import ttk
-from ttkthemes import ThemedTk
 
 
 class DataAnalysisInterface:

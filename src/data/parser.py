@@ -1,8 +1,8 @@
 import os
 import pandas as pd
 import numpy as np
-from utils.exceptions import InvalidExtensionError
-from utils.logger import AppLogger
+from src.utils.exceptions import InvalidExtensionError
+from src.utils.logger import AppLogger
 
 
 class DataParser:

@@ -1,8 +1,8 @@
-from data.parser import DataParser
-from utils.constants import XLSX_PATH, CSV_PATH, TACOMETER_VOLTAGE, ARMOR_VOLTAGE, ENGINE_SPEED
-from params.simulation_params_calculator import SimulationParamsCalculator
-from params.calculate_motor_controller_params import CalculateMotorControllerParams
-from utils.logger import AppLogger
+from src.data.parser import DataParser
+from src.utils.constants import XLSX_PATH, CSV_PATH, TACOMETER_VOLTAGE, ARMOR_VOLTAGE, ENGINE_SPEED
+from src.params.simulation_params_calculator import SimulationParamsCalculator
+from src.params.calculate_motor_controller_params import CalculateMotorControllerParams
+from src.utils.logger import AppLogger
 
 if __name__ == '__main__':
     logger = AppLogger().get_logger()
