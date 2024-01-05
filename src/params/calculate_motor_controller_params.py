@@ -4,7 +4,9 @@ from src.utils.logger import AppLogger
 
 
 class CalculateMotorControllerParams:
-    def __init__(self, x_axis: list, y_ch1_axis: list, y_ch2_axis: list, logger: AppLogger.get_logger):
+    def __init__(self, x_axis: list, y_ch1_axis: list, y_ch2_axis: list, logger=None):
+        if logger is None:
+            logger = AppLogger().get_logger()
         self.x_axis = x_axis
         self.y_ch1_axis = y_ch1_axis
         self.y_ch2_axis = y_ch2_axis

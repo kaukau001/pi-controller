@@ -6,7 +6,9 @@ from src.utils.logger import AppLogger
 
 
 class DataParser:
-    def __init__(self, file_path: str, logger: AppLogger.get_logger):
+    def __init__(self, file_path: str, logger: None):
+        if logger is None:
+            logger = AppLogger().get_logger()
         self.file_path = file_path
         self.logger = logger
 

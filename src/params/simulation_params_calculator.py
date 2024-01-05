@@ -5,7 +5,9 @@ from src.utils.logger import AppLogger
 
 
 class SimulationParamsCalculator:
-    def __init__(self, voltage: list, tachometer: list, rotation: list, logger: AppLogger.get_logger):
+    def __init__(self, voltage: list, tachometer: list, rotation: list, logger=None):
+        if logger is None:
+            logger = AppLogger().get_logger()
         self.voltage = voltage
         self.tachometer = tachometer
         self.rotation = rotation

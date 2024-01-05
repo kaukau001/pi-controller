@@ -6,12 +6,13 @@ from src.utils.logger import AppLogger
 
 
 class Plotter:
-    def __init__(self):
-        self.logger = AppLogger().get_logger()
+    def __init__(self, logger=None):
+        if logger is None:
+            logger = AppLogger().get_logger()
+        self.logger = logger
 
     def plot_linear_region(self):
         armor, tachometer = DataParser(XLSX_PATH, self.logger).parse_xlsx(ARMOR_VOLTAGE, TACOMETER_VOLTAGE)
-
         plt.figure('Linear Region')
         plt.plot(armor, tachometer, 'o', label='Experimental Data')
 

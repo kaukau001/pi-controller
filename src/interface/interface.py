@@ -1,24 +1,29 @@
 import tkinter as tk
 import pandas as pd
 from pandas import DataFrame
-import subprocess
+from io import StringIO
 from src.utils.constants import XLSX_PATH, ARMOR_VOLTAGE, TACOMETER_VOLTAGE, CSV_PATH, ENGINE_SPEED, ROTINE_PATH
 from src.data.parser import DataParser
 from src.plots.plotter import Plotter
-from src.utils.logger import AppLogger
+import logging
 from tkinter import scrolledtext
 from tkinter import ttk
+from src import rotine
+from src.utils.logger import AppLogger
 
 
 class DataAnalysisInterface:
-    def __init__(self, window, plotter: Plotter, logger: AppLogger.get_logger):
+    def __init__(self, window):
 
         style = tk.ttk.Style()
         style.configure("TButton", padding=(10, 5, 10, 5), font='Helvetica 10 bold', background='#ccc')
 
+        self.log_buffer = StringIO()
+        logging.basicConfig(stream=self.log_buffer, level=logging.DEBUG)
+        self.logger = AppLogger.get_instance()
+
         self.window = window
-        self.plotter = plotter
-        self.logger = logger
+        self.plotter = Plotter(self.logger)
 
         self.window.title("Interface for Processing and Plotting Files")
         style = ttk.Style(self.window)
@@ -88,6 +93,8 @@ class DataAnalysisInterface:
 
     def process_files(self):
         try:
+            self.log_text.delete('1.0', tk.END)
+            self.logger.info('Processing files')
             path_xlsx = self.entry_xlsx.get() or self.default_path_xlsx
             path_csv = self.entry_csv.get() or self.default_path_csv
 
@@ -113,47 +120,54 @@ class DataAnalysisInterface:
             self.show_data(df_xlsx, "Experiment Data")
             self.show_data(df_csv, "Oscilloscope Data")
 
+            self.logger.info('Successfully processed files')
+            log_output = self.logger.get_log_buffer().getvalue()
+            self.log_text.insert(tk.END, log_output)
         except Exception as e:
-            self.logger.error(f"Error processing files: {e}")
+            error_message = f"Error generating the report: {e}\n"
+            self.log_text.insert(tk.END, error_message)
+            self.logger.error(error_message)
 
-    def show_data(self, dataframe: DataFrame, title: str, logs: str = ""):
-        data_window = tk.Toplevel(self.window)
-        data_window.title(title)
+    def show_data(self, dataframe: DataFrame, title: str):
+        try:
 
-        window_height = min(500, len(dataframe) * 20)
-        data_window.geometry(f"500x{window_height}")
+            data_window = tk.Toplevel(self.window)
+            data_window.title(title)
 
-        data_text = tk.Text(data_window, height=len(dataframe), width=60)
-        data_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            window_height = min(500, len(dataframe) * 20)
+            data_window.geometry(f"500x{window_height}")
 
-        scrollbar = tk.Scrollbar(data_window, command=data_text.yview)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        data_text.config(yscrollcommand=scrollbar.set)
+            data_text = tk.Text(data_window, height=len(dataframe), width=60)
+            data_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        data_text.insert(tk.END, dataframe.to_string(index=False))
+            scrollbar = tk.Scrollbar(data_window, command=data_text.yview)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            data_text.config(yscrollcommand=scrollbar.set)
 
-        if logs:
-            self.log_text.insert(tk.END, logs)
+            data_text.insert(tk.END, dataframe.to_string(index=False))
+
+        except Exception as e:
+            error_message = f"Error generating the report: {e}\n"
+            self.log_text.insert(tk.END, error_message)
+            self.logger.error(error_message)
 
     def generate_report(self):
         try:
             self.log_text.delete('1.0', tk.END)
+            rotine.rotine(self.entry_xlsx.get(), self.entry_csv.get(), self.logger)
 
-            result = subprocess.run(['python', f'{ROTINE_PATH}'],
-                                    capture_output=True, text=True, encoding='utf-8')
+            log_output = self.logger.get_log_buffer().getvalue()
 
-            self.log_text.insert(tk.END, result.stdout)
-            self.log_text.insert(tk.END, result.stderr)
+            self.log_text.insert(tk.END, log_output)
 
         except Exception as e:
-            self.logger.error(f"Error generating the report: {e}")
+            error_message = f"Error generating the report: {e}\n"
+            self.log_text.insert(tk.END, error_message)
+            self.logger.error(error_message)
 
-
-logger = AppLogger().get_logger()
-plotter_instance = Plotter()
 
 main_window = tk.Tk()
 
-main_interface = DataAnalysisInterface(main_window, plotter_instance, logger)
+main_interface = DataAnalysisInterface(main_window)
 
 main_window.mainloop()
