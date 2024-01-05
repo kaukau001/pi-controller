@@ -8,7 +8,7 @@ from src.plots.plotter import Plotter
 import logging
 from tkinter import scrolledtext
 from tkinter import ttk
-from src import rotine
+from src.rotine import rotine
 from src.utils.logger import AppLogger
 
 
@@ -154,7 +154,7 @@ class DataAnalysisInterface:
     def generate_report(self):
         try:
             self.log_text.delete('1.0', tk.END)
-            rotine.rotine(self.entry_xlsx.get(), self.entry_csv.get(), self.logger)
+            rotine(self.entry_xlsx.get(), self.entry_csv.get(), self.logger)
 
             log_output = self.logger.get_log_buffer().getvalue()
 

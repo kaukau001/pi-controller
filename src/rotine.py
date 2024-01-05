@@ -4,10 +4,13 @@ from src.params.simulation_params_calculator import SimulationParamsCalculator
 from src.params.calculate_motor_controller_params import CalculateMotorControllerParams
 from src.utils.logger import AppLogger
 
-if __name__ == '__main__':
-    logger = AppLogger().get_logger()
-    xlsx_data = DataParser(XLSX_PATH, logger)
-    csv_data = DataParser(CSV_PATH, logger)
+
+def rotine(xlsx_path, csv_path, logger=None):
+    if logger is None:
+        logger = AppLogger().get_logger()
+
+    xlsx_data = DataParser(xlsx_path, logger)
+    csv_data = DataParser(csv_path, logger)
 
     logger.warning('ANALYZING EXPERIMENT DATA')
     voltage, tachometer, rotation = xlsx_data.linearize_xlsx(ARMOR_VOLTAGE, TACOMETER_VOLTAGE, ENGINE_SPEED)
@@ -38,3 +41,7 @@ if __name__ == '__main__':
     kp = motor_controller_params.calculate_kp(k, tau, zeta, omega_n)
     ti = motor_controller_params.calculate_ti(k, tau, omega_n, kp)
     logger.warning('REPORT SUCCESSFULLY COMPLETED')
+
+
+if __name__ == '__main__':
+    rotine(XLSX_PATH, CSV_PATH)
