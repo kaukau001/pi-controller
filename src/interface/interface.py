@@ -77,6 +77,10 @@ class DataAnalysisInterface:
         self.entry_xlsx.insert(0, self.default_path_xlsx)
         self.entry_csv.insert(0, self.default_path_csv)
         self.window.bind("<Configure>", self.on_window_resize)
+        self.window.update_idletasks()
+        min_width = self.window.winfo_reqwidth()
+        min_height = self.window.winfo_reqheight()
+        self.window.minsize(min_width, min_height)
 
     def on_window_resize(self, event):
         width, height = event.width, event.height
