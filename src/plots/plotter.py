@@ -60,12 +60,3 @@ class Plotter:
         plt.ylabel(ylabel)
         plt.grid(True)
         plt.show()
-
-
-# Example usage
-if __name__ == "__main__":
-    plotter = Plotter()
-    plotter.plot_armature_tachometer()
-    plotter.plot_tachometer_speed()
-    plotter.plot_linear_region()
-    plotter.plot_motor_response()
